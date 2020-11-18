@@ -20,6 +20,9 @@ import java.util.*;
 import javax.swing.BorderFactory;
 import javax.swing.JToolBar;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ghidra.framework.model.*;
 
 /**
@@ -27,6 +30,8 @@ import ghidra.framework.model.*;
  */
 class ProjectToolBar extends JToolBar implements ToolChestChangeListener {
 	private final static int TYPICAL_NUM_TOOLS = 5;
+	
+	private static final Logger LOG = LogManager.getLogger(ProjectToolBar.class);
 
 	private Map<String, ToolButton> toolButtonMap;
 	private FrontEndPlugin plugin;
@@ -34,6 +39,7 @@ class ProjectToolBar extends JToolBar implements ToolChestChangeListener {
 
 	ProjectToolBar(FrontEndPlugin plugin) {
 		super();
+		LOG.info("constructor started");
 		this.plugin = plugin;
 		tool = ((FrontEndTool) plugin.getTool());
 		toolButtonMap = new HashMap<>(TYPICAL_NUM_TOOLS);
@@ -47,12 +53,14 @@ class ProjectToolBar extends JToolBar implements ToolChestChangeListener {
 		// odd display coloring issues in some LookAndFeels, like Metal
 		setOpaque(false);
 		setFloatable(false); // it is odd to allow the user to undock the tool buttons
+		LOG.info("constructor ended");
 	}
 
 	@Override
 	public void toolTemplateAdded(ToolTemplate toolConfig) {
 		// rebuild the tool bar so that the tools are shown in
 		// alphabetical order
+		LOG.info("Will call populateToolBar from toolTemplateAdded");
 		populateToolBar();
 	}
 
@@ -85,8 +93,10 @@ class ProjectToolBar extends JToolBar implements ToolChestChangeListener {
 		clear();
 
 		if (project == null) {
+			LOG.info("setActiveProject but project is still null");
 			return;
 		}
+		LOG.info("Will call populateToolBar from setActiveProject");
 		populateToolBar();
 	}
 

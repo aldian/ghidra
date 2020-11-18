@@ -26,6 +26,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import docking.*;
 import docking.action.DockingAction;
 import docking.action.MenuData;
@@ -77,6 +80,8 @@ public class FrontEndPlugin extends Plugin
 	private final static String DELETE_TOOL_ACTION_NAME = "Delete Tool";
 	private final static String CLOSE_TOOL_ACTION_NAME = "Close Tool";
 	private final static String PROPERTIES_ACTION_NAME = "Configure Plugins";
+	
+	private static final Logger LOG = LogManager.getLogger(FrontEndPlugin.class);
 
 	private JPanel mainGuiPanel;
 	private ProjectToolBar toolBar;
@@ -349,6 +354,7 @@ public class FrontEndPlugin extends Plugin
 	 * @param project the active project
 	 */
 	void setActiveProject(Project project) {
+		LOG.info("setActiveProject");
 
 		// clean up before setting the new project to be the active one
 		if (activeProject != null) {

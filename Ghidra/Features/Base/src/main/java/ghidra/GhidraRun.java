@@ -90,8 +90,11 @@ public class GhidraRun implements GhidraLaunchable {
 			DomainObjectAdapter.setDefaultContentClass(ProgramDB.class);
 
 			updateSplashScreenStatusMessage("Checking for previous project...");
+			log.info("BEFORE runSwingLater");
 			SystemUtilities.runSwingLater(() -> {
+				log.info("BEFORE processArguments");
 				String projectPath = processArguments(args);
+				log.info("AFTER processArguments. projectPath: " + projectPath);
 				openProject(projectPath);
 			});
 		};
@@ -111,6 +114,8 @@ public class GhidraRun implements GhidraLaunchable {
 		}
 		String projectPath = null;
 		for (String arg : args) {
+			log.info("PROCESSING ARG: " + arg);
+
 			if (arg.startsWith("-D")) {
 				String[] split = arg.substring(2).split("=");
 				if (split.length == 2) {
@@ -179,6 +184,7 @@ public class GhidraRun implements GhidraLaunchable {
 	}
 
 	private void openProject(FrontEndTool tool, ProjectLocator projectLocator, boolean reopen) {
+		log.info("openProject BEGIN");
 		SplashScreen.updateSplashScreenStatus(
 			(reopen ? "Reopening" : "Opening") + " project: " + projectLocator.getName());
 
@@ -187,6 +193,7 @@ public class GhidraRun implements GhidraLaunchable {
 	}
 
 	private void doOpenProject(FrontEndTool tool, ProjectLocator projectLocator, boolean reopen) {
+		log.info("doOpenProject BEGIN");
 		try {
 			ProjectManager pm = tool.getProjectManager();
 			Project activeProject = pm.openProject(projectLocator, true, false);
@@ -194,13 +201,14 @@ public class GhidraRun implements GhidraLaunchable {
 				return;
 			}
 
+			log.info("CALL tool.setActiveProject");
 			tool.setActiveProject(activeProject);
 
 			RepositoryAdapter repository = activeProject.getRepository();
 			if (repository != null && !repository.isConnected()) {
 				Msg.showInfo(GhidraRun.class, null, "Working Off-Line ",
-					"Even though you are not connected to the Ghidra Server,\n" +
-						"you can still work off-line on checked out files or private files.\n" +
+					"E)ven though you are not connected to the Ghidra Server,\n" +
+						"you can still work off-line on checked out files or )private files.\n" +
 						"You can also try reconnecting to the server by selecting the connect\n" +
 						"button on the Ghidra Project Window.\n \n" +
 						"See the Ghidra Help topic 'Project Repository' for troubleshooting\n" +

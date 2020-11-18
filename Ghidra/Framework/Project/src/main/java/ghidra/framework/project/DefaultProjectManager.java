@@ -192,11 +192,15 @@ public class DefaultProjectManager implements ProjectManager {
 	 */
 	@Override
 	public ProjectLocator getLastOpenedProject() {
+		LOG.info("GETLASTOPENEDPROJECT BEGIN");
 		String projectPath = Preferences.getProperty(LAST_OPENED_PROJECT);
 		if (projectPath == null || projectPath.trim().length() == 0) {
 			return null;
 		}
-		return getLocatorFromProjectPath(projectPath);
+		LOG.info("GETLASTOPENEDPROJECT. projectPath:" + projectPath);
+		ProjectLocator locator = getLocatorFromProjectPath(projectPath);
+		LOG.info("GETLASTOPENEDPROJECT END. locator:" + locator.toString());
+		return locator;
 	}
 
 	/**

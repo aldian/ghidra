@@ -29,6 +29,8 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import generic.Images;
 import ghidra.util.Msg;
@@ -46,6 +48,8 @@ import utility.module.ModuleUtilities;
  * as opposed to using the flawed constructor {@link ImageIcon#ImageIcon(Image)}.
  */
 public class ResourceManager {
+
+	private static final Logger LOG = LogManager.getLogger(ResourceManager.class);
 
 	private final static String DEFAULT_ICON_FILENAME = Images.BOMB;
 	private static ImageIcon DEFAULT_ICON;
@@ -577,7 +581,9 @@ public class ResourceManager {
 		List<String> results = new ArrayList<>();
 
 		String classPath = System.getProperty("java.class.path");
+		LOG.info("CLASSPATH: " + classPath);
 		String java = System.getProperty("java.home");
+		LOG.info("JAVA: " + java);
 
 		StringTokenizer st = new StringTokenizer(classPath, File.pathSeparator);
 		while (st.hasMoreElements()) {
@@ -586,6 +592,7 @@ public class ResourceManager {
 				continue;
 			}
 
+            LOG.info("PATH: " + path);
 			results.add(path);
 		}
 
